@@ -17,36 +17,41 @@ class MainWindow(QMainWindow):
         self.setGeometry(
             QtWidgets.QStyle.alignedRect(
                 QtCore.Qt.LeftToRight, QtCore.Qt.AlignCenter,
-                QtCore.QSize(256, 96),
+                QtCore.QSize(96, 96),
                 QtWidgets.qApp.desktop().availableGeometry()
         ))
 
     #def mousePressEvent(self, event):
         #label.setText(str(count("..\\")))
-    #def paintEvent(self, event):
-        #label.setText(str(count("..\\")))
+    def resizeEvent(self, event):
+        width = self.frameGeometry().width()
+        height = self.frameGeometry().height()
+        fontsize = int(width*.40 + height*.20)
+        font.setPointSize(fontsize)
+        label.setFont(font)
+        label.setGeometry(int(width/16),-int(height/9),width, height)
+        
 
 def main():
     # Creating Qt Window
     app = QApplication(sys.argv)
     window = MainWindow()
     window.setStyleSheet("background-color: black;")
-    window.setWindowTitle("Contador V0.3")
+    window.setWindowTitle("Contador V0.4")
     icon = QtGui.QIcon("icon.png")
     window.setWindowIcon(icon)
+
 
     # Counter Showing
     global label
     label = QLabel("", window)
+    global font
     font = QtGui.QFont()
-    font.setPointSize(64)
-    label.setFont(font)
     label.setStyleSheet("color: white;")
-    label.setGeometry(80,0,200, 100)
 
     #Timer with a refresh rate of 60 FPS
     timer = QtCore.QTimer(window)
-    timer.setInterval(256) 
+    timer.setInterval(128) 
 
     # Connect the timer's timeout signal to a slot that updates the label's content
     def updateLabel():
