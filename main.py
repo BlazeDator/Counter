@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(
             QtWidgets.QStyle.alignedRect(
                 QtCore.Qt.LeftToRight, QtCore.Qt.AlignCenter,
-                QtCore.QSize(96, 96),
+                QtCore.QSize(120, 100),
                 QtWidgets.qApp.desktop().availableGeometry()
         ))
 
@@ -26,10 +26,11 @@ class MainWindow(QMainWindow):
     def resizeEvent(self, event):
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
-        fontsize = int(width*.40 + height*.20)
+        fontsize = int((width + height)/3)
         font.setPointSize(fontsize)
         label.setFont(font)
-        label.setGeometry(int(width/16),-int(height/9),width, height)
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        label.setGeometry(-int(width*.005),-int(height*.1),width, height)
         
 
 def main():
