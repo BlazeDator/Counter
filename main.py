@@ -38,7 +38,7 @@ def main():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.setStyleSheet("background-color: black;")
-    window.setWindowTitle("Contador V0.5")
+    window.setWindowTitle("Contador V0.5.1")
     icon = QtGui.QIcon("icon.png")
     window.setWindowIcon(icon)
 
