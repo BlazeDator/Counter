@@ -41,7 +41,6 @@ def main():
     icon = QtGui.QIcon("icon.png")
     window.setWindowIcon(icon)
 
-
     # Counter Showing
     global label
     label = QLabel("", window)
@@ -49,7 +48,7 @@ def main():
     font = QtGui.QFont()
     label.setStyleSheet("color: white;")
 
-    #Timer with a refresh rate of 60 FPS
+    #Timer - Update every 128ms
     timer = QtCore.QTimer(window)
     timer.setInterval(128) 
 
@@ -66,6 +65,8 @@ def main():
 
     # Start the timer
     timer.start()
+    
+    # Qt Window
     window.show()
     window.update()
     app.exec_()
