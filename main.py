@@ -37,7 +37,7 @@ def main():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.setStyleSheet("background-color: black;")
-    window.setWindowTitle("Contador V0.4")
+    window.setWindowTitle("Contador V0.5")
     icon = QtGui.QIcon("icon.png")
     window.setWindowIcon(icon)
 
@@ -59,7 +59,7 @@ def main():
         for file in dir:
             if re.match(r"^\d+_V1_\d+.*$", file):
                 counter += 1
-        label.setText(str(counter))
+        label.setText(str(counter).zfill(2))
 
     timer.timeout.connect(updateLabel)
 
