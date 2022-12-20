@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(
             QtWidgets.QStyle.alignedRect(
                 QtCore.Qt.LeftToRight, QtCore.Qt.AlignCenter,
-                QtCore.QSize(120, 100),
+                QtCore.QSize(125, 105),
                 QtWidgets.qApp.desktop().availableGeometry()
         ))
 
