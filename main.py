@@ -60,6 +60,10 @@ def main():
         for file in dir:
             if re.match(r"^\d+_V1_\d+.*$", file):
                 counter += 1
+        if counter >= 92:
+            label.setStyleSheet("color: green;")
+        else:
+            label.setStyleSheet("color: white;")
         label.setText(str(counter).zfill(2))
 
     timer.timeout.connect(updateLabel)
