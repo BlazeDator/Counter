@@ -12,8 +12,9 @@ class MyWidget(QtWidgets.QWidget):
         self.textTotal = QtWidgets.QLabel("Total: ")
         self.counterTotal = QtWidgets.QLabel("00")
         self.newButton = QtWidgets.QPushButton("Novo")
+        self.newButton.setStyleSheet("background:#81B38E;")
         self.deleteButton = QtWidgets.QPushButton("Apagar Ultimo")
-
+        self.deleteButton.setStyleSheet("background:#b3818e;")
         
         # Logic
         self.selected = None
@@ -66,7 +67,9 @@ class MyWidget(QtWidgets.QWidget):
             self.linesToLabels.pop(self.lines[-1])
             self.lines.pop().deleteLater()
             self.labels.pop().deleteLater()
-            self.resizeEvent(self)        
+            self.resizeEvent(self)
+
+            self.resize(self.width(), (self.height() - self.width()))        
 
     def select(self,x=None):
         if self.selected:
@@ -125,7 +128,7 @@ def main():
 
     # Main Window/Widget
     widget = MyWidget()
-    widget.setWindowTitle("Contador V0.6")
+    widget.setWindowTitle("Contador V0.6.2")
     icon = QtGui.QIcon("icon.png")
     widget.setWindowIcon(icon)
 
@@ -146,11 +149,6 @@ def main():
             widget.linesToLabels[widget.selected].setText(str(
                 int(widget.linesToLabels[widget.selected].text()) + counter - total).zfill(2))
             widget.counterTotal.setText(str(counter).zfill(2))
-
-
-
-
-
 
 
     timer.timeout.connect(updateLabel)
