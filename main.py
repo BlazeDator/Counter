@@ -1,5 +1,4 @@
-import sys
-import random
+import sys, os, re
 from PySide6 import QtCore, QtWidgets, QtGui
 
 class MyWidget(QtWidgets.QWidget):
@@ -39,9 +38,7 @@ class MyWidget(QtWidgets.QWidget):
         self.newButton.clicked.connect(self.new)
         self.deleteButton.clicked.connect(self.delete)
 
-
-        
-        
+    
 
     def new(self):
         line = myLineEdit(self)
@@ -62,9 +59,11 @@ class MyWidget(QtWidgets.QWidget):
 
     def delete(self):
         if len(self.lines) > 1:
+            self.counterTotal.setText(str(int(self.counterTotal.text()) - int(self.linesToLabels[self.lines[-1]].text())).zfill(2))
             if self.lines[-1] is self.selected:
                 self.select(x=self.lines[-2])
 
+            self.linesToLabels.pop(self.lines[-1])
             self.lines.pop().deleteLater()
             self.labels.pop().deleteLater()
             self.resizeEvent(self)        
@@ -129,6 +128,36 @@ def main():
     widget.setWindowTitle("Contador V0.6")
     icon = QtGui.QIcon("icon.png")
     widget.setWindowIcon(icon)
+
+    #Timer - Update every 128ms
+    timer = QtCore.QTimer(widget)
+    timer.setInterval(128) 
+
+    # Connect the timer's timeout signal to a slot that updates the label's content
+    def updateLabel():
+        counter = 0
+        dir = os.listdir("..\\")
+        for file in dir:
+            if re.match(r"^\d+_V1_\d+.*$", file):
+                counter += 1
+
+        total = int(widget.counterTotal.text())
+        if counter > total:
+            widget.linesToLabels[widget.selected].setText(str(
+                int(widget.linesToLabels[widget.selected].text()) + counter - total).zfill(2))
+            widget.counterTotal.setText(str(counter).zfill(2))
+
+
+
+
+
+
+
+    timer.timeout.connect(updateLabel)
+
+    # Start the timer
+    timer.start()
+
 
     widget.show()
 
