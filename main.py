@@ -7,44 +7,90 @@ class MyWidget(QtWidgets.QWidget):
         super().__init__()
         self.setWindowFlags( QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.WindowCloseButtonHint | QtCore.Qt.X11BypassWindowManagerHint )
         self.font = QtGui.QFont()
+        self.sizeP = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
 
+        # Start UI
         self.textTotal = QtWidgets.QLabel("Total: ")
         self.counterTotal = QtWidgets.QLabel("00")
-        self.newButton= QtWidgets.QPushButton("Novo")
+        self.newButton = QtWidgets.QPushButton("Novo")
+        self.deleteButton = QtWidgets.QPushButton("Apagar Ultimo")
+
+        
+        # Logic
+        self.selected = None
+
 
         # Storage
         self.labels = [self.textTotal, self.counterTotal]
-        self.buttons = [self.newButton]
+        self.buttons = [self.newButton, self.deleteButton]
         self.lines = []
+        self.linesToLabels = {}
 
         self.layout = QtWidgets.QFormLayout(self)
         self.layout.addRow(self.textTotal, self.counterTotal)
         self.layout.addRow(self.newButton)
-        self.magic()
+        self.layout.addRow(self.deleteButton)
+        self.new()
+
+        # Window Size
+        self.resize(384, 192)
 
         self.resizeEvent(self)
-        self.newButton.clicked.connect(self.magic)
+        self.newButton.clicked.connect(self.new)
+        self.deleteButton.clicked.connect(self.delete)
+
+
+        
         
 
-    @QtCore.Slot()
-    def magic(self):
-        line = QtWidgets.QLineEdit("Nome")
-        self.lines.append(line)
+    def new(self):
+        line = myLineEdit(self)
+        line.setSizePolicy(self.sizeP)
+        
 
+        self.lines.append(line)
+        
         text = QtWidgets.QLabel("00")
         self.labels.append(text)
+
+        self.linesToLabels[line] = text
+        
+        self.select(x=self.selected)
 
         self.layout.addRow(line, text)
         self.resizeEvent(self)
 
+    def delete(self):
+        if len(self.lines) > 1:
+            if self.lines[-1] is self.selected:
+                self.select(x=self.lines[-2])
+
+            self.lines.pop().deleteLater()
+            self.labels.pop().deleteLater()
+            self.resizeEvent(self)        
+
+    def select(self,x=None):
+        if self.selected:
+            self.selected.setStyleSheet("background:white;")
+
+        if x:
+            self.selected = x
+        else:
+            self.selected = self.lines[-1]
+            
+        self.selected.setStyleSheet("background:#81B38E;")
+
+
+
     def resizeEvent(self, event):
-        width = self.frameGeometry().width()
-        height = self.frameGeometry().height()
+        width = self.frameGeometry().width()*1.4
+        #height = self.frameGeometry().height()*.30
+        size = width
 
         # Control Sizes here
-        labelSize = int((width + height)/24)
-        buttonSize = int((width + height)/32)
-        lineSize = int((width + height)/32)
+        labelSize = int(size/26)
+        buttonSize = int(size/32)
+        lineSize = int(size/32)
 
         self.font.setPointSize(labelSize)
         for label in self.labels:
@@ -59,17 +105,30 @@ class MyWidget(QtWidgets.QWidget):
         for line in self.lines:
             line.setFont(self.font)
 
+
+
+class myLineEdit(QtWidgets.QLineEdit):
+    def __init__(self, widget):
+        super().__init__()
+        self.setText("Inserir Nome")
+        self.widget = widget
+
+    def mousePressEvent(self, event):
+        self.widget.select(x=self)
+
+
+
+
+
 def main():
     # Start Application
     app = QtWidgets.QApplication([])
 
     # Main Window/Widget
     widget = MyWidget()
-    widget.resize(256, 256)
     widget.setWindowTitle("Contador V0.6")
     icon = QtGui.QIcon("icon.png")
     widget.setWindowIcon(icon)
-
 
     widget.show()
 
