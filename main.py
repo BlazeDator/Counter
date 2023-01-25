@@ -39,8 +39,6 @@ class MyWidget(QtWidgets.QWidget):
         self.newButton.clicked.connect(self.new)
         self.deleteButton.clicked.connect(self.delete)
 
-    
-
     def new(self):
         line = myLineEdit(self)
         line.setSizePolicy(self.sizeP)
@@ -82,8 +80,6 @@ class MyWidget(QtWidgets.QWidget):
             
         self.selected.setStyleSheet("background:#81B38E;")
 
-
-
     def resizeEvent(self, event):
         width = self.frameGeometry().width()*1.4
         #height = self.frameGeometry().height()*.30
@@ -107,8 +103,6 @@ class MyWidget(QtWidgets.QWidget):
         for line in self.lines:
             line.setFont(self.font)
 
-
-
 class myLineEdit(QtWidgets.QLineEdit):
     def __init__(self, widget):
         super().__init__()
@@ -117,9 +111,6 @@ class myLineEdit(QtWidgets.QLineEdit):
 
     def mousePressEvent(self, event):
         self.widget.select(x=self)
-
-
-
 
 
 def main():
