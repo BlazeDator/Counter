@@ -1,80 +1,69 @@
-import sys, os, re
+import sys
+import random
+from PySide6 import QtCore, QtWidgets, QtGui
 
-from PyQt5 import QtGui, QtCore
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QApplication,QLabel
-
-
-class MainWindow(QMainWindow):
+class MyWidget(QtWidgets.QWidget):
     def __init__(self):
-        QMainWindow.__init__(self)
-        self.setWindowFlags(
-            QtCore.Qt.WindowStaysOnTopHint |
-            QtCore.Qt.WindowCloseButtonHint |
-            #QtCore.Qt.FramelessWindowHint |
-            QtCore.Qt.X11BypassWindowManagerHint
-        )
-        self.setGeometry(
-            QtWidgets.QStyle.alignedRect(
-                QtCore.Qt.LeftToRight, QtCore.Qt.AlignCenter,
-                QtCore.QSize(125, 105),
-                QtWidgets.qApp.desktop().availableGeometry()
-        ))
+        super().__init__()
+        self.setWindowFlags( QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.WindowCloseButtonHint )
+        self.font = QtGui.QFont()
 
-    #def mousePressEvent(self, event):
-        #label.setText(str(count("..\\")))
+
+
+        self.textTotal = QtWidgets.QLabel("Total: ")
+        self.counterTotal = QtWidgets.QLabel("0")
+        self.newButton= QtWidgets.QPushButton("Novo")
+        self.prompt = QtWidgets.QLineEdit("Nome")
+
+        # Storage
+        self.labels = [self.textTotal, self.counterTotal]
+        self.buttons = []
+
+        self.layout = QtWidgets.QFormLayout(self)
+        self.layout.addRow(self.textTotal, self.counterTotal)
+        self.layout.addRow(self.prompt, self.newButton)
+        
+
+        self.resizeEvent(self)
+        self.newButton.clicked.connect(self.magic)
+        self.newButton.setFont(self.font)
+
+    @QtCore.Slot()
+    def magic(self):
+        button = QtWidgets.QPushButton(self.prompt.text())
+        self.buttons.append(button)
+
+        text = QtWidgets.QLabel("0")
+        self.labels.append(text)
+
+        self.layout.addRow(button, text)
+        self.resizeEvent(self)
+
     def resizeEvent(self, event):
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
-        fontsize = int((width + height)/3)
-        font.setPointSize(fontsize)
-        label.setFont(font)
-        label.setAlignment(QtCore.Qt.AlignCenter)
-        label.setGeometry(-int(width*.005),-int(height*.1),width, height)
-        
+        fontsize = int((width + height)/24)
+        self.font.setPointSize(fontsize)
+        for label in self.labels:
+            label.setAlignment(QtCore.Qt.AlignCenter)
+            label.setFont(self.font)
 
 def main():
-    # Creating Qt Window
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.setStyleSheet("background-color: black;")
-    window.setWindowTitle("Contador V0.5.1")
+    # Start Application
+    app = QtWidgets.QApplication([])
+
+    # Main Window/Widget
+    widget = MyWidget()
+    widget.resize(256, 256)
+    widget.setWindowTitle("Contador V0.6")
     icon = QtGui.QIcon("icon.png")
-    window.setWindowIcon(icon)
+    widget.setWindowIcon(icon)
 
-    # Counter Showing
-    global label
-    label = QLabel("", window)
-    global font
-    font = QtGui.QFont()
-    label.setStyleSheet("color: white;")
 
-    #Timer - Update every 128ms
-    timer = QtCore.QTimer(window)
-    timer.setInterval(128) 
+    widget.show()
 
-    # Connect the timer's timeout signal to a slot that updates the label's content
-    def updateLabel():
-        counter = 0
-        dir = os.listdir("..\\")
-        for file in dir:
-            if re.match(r"^\d+_V1_\d+.*$", file):
-                counter += 1
-        if counter >= 92:
-            label.setStyleSheet("color: green;")
-        else:
-            label.setStyleSheet("color: white;")
-        label.setText(str(counter).zfill(2))
+    sys.exit(app.exec())
 
-    timer.timeout.connect(updateLabel)
 
-    # Start the timer
-    timer.start()
-    
-    # Qt Window
-    window.show()
-    window.update()
-    app.exec_()
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
