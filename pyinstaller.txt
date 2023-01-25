@@ -1,1 +1,1 @@
-pyinstaller main.py -F --clean --noconsole
+pyinstaller main.py -F --clean --noconsole --icon=icon.ico

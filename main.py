@@ -129,7 +129,7 @@ def main():
     # Main Window/Widget
     widget = MyWidget()
     widget.setWindowTitle("Contador V0.6.2")
-    icon = QtGui.QIcon("icon.png")
+    icon = QtGui.QIcon("icone/icon.png")
     widget.setWindowIcon(icon)
 
     #Timer - Update every 128ms
