@@ -211,3 +211,6 @@ if __name__ == "__main__":
     main()
 
 
+# Next Versions
+# Previsao de trabalho JW 44 IDs, roupa 95 IDs
+# Contar trabalho de outra forma
