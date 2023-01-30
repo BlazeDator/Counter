@@ -214,3 +214,6 @@ if __name__ == "__main__":
 # Next Versions
 # Previsao de trabalho JW 44 IDs, roupa 95 IDs
 # Contar trabalho de outra forma
+# Então, é para mostrar quanto trabalho ficaria por fazer noutra categoria com o tempo restante
+# Ou seja, acabando por exemplo jw e passando para clothing passado 2 horas, significa que nas 5h20 
+# restantes teria que chegar a um resultado que seria x
