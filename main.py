@@ -180,7 +180,7 @@ def main():
         for file in dir:
             if re.match(r"^\d+_V1_\d+.*$", file):
                 counter += 1
-            if re.match(r"^\d+_V1_\w+_\d+.*$", file):
+            if re.match(r"^\d+_V+\d+_\w+_\d+.*$", file):
                 counter_reworks += 1
 
         # Count
@@ -211,7 +211,3 @@ if __name__ == "__main__":
     main()
 
 
-# PROXIMAS FEATURES
-
-# Salvar o contador atual 
-# Contar os reworks a parte "19621617_V1_Rework_29256250"
